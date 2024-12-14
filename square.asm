@@ -5,6 +5,7 @@
 |; @param sideLength  the length of the side of the square (in number of pixels).
 drawSquare:
 
+    |; Initialize the stack
     PUSH(LP) PUSH(BP)
     MOVE(SP, BP)
 
@@ -13,18 +14,13 @@ drawSquare:
 
     |; Arguments
     LD(BP, -12, R1) |; R1 <- xTopLeft 
-    
     LD(BP, -16, R2) |; R2 <- yTopLeft 
-    
     LD(BP, -20, R3) |; R3 <- sideLength
 
     |; Local variables for bottom-right corner
     SUBC(R3, 1, R3) |; R3 <- sideLength - 1
-    
     ADD(R1, R3, R4) |; xBottomRight (R4) <- xTopLeft (R1) + sideLength - 1 (R3)
-    
     ADD(R2, R3, R5) |; yBottomRight (R5) <- yTopLeft (R2) + sideLength - 1 (R3)
-
     MOVE(R2, R3) |; yCur (R3) <- yTopLeft (R2)
 
 |; Loop through each row of the square
@@ -70,7 +66,7 @@ square_canvas:
     |; Last-argument-pushed-first (LAPF) convention
     PUSH(R3) |; yCur
     PUSH(R6) |; xCur
-    CALL(canvas_set_to_1)
+    CALL(canvas_set_to_1, 2)
     
     |; Incrementing xCur and branching to the current inner loop
     ADDC(R6, 1, R6)     |; xCur++
