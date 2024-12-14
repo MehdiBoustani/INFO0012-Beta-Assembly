@@ -11,7 +11,7 @@ drawFractal:
     MOVE(SP, BP)
 
     |; Save registers
-    PUSH(R1) PUSH(R2) PUSH(R3) PUSH(R4) PUSH(R5) PUSH(R6) 
+    PUSH(R1) PUSH(R2) PUSH(R3) PUSH(R4) PUSH(R5)
 
     |; Arguments
     LD(BP, -12, R1) |; R1 <- xTopLeft
@@ -38,23 +38,28 @@ drawFractal2:
     |; Calculate the parameters of the circle
     SHRC(R3, 1, R5) |; radius (R5) <- sideLength (R3) / 2 (using shift right)
     ADD(R1, R5, R0) |; xc (R0) <- xTopLeft (R1) + radius (R5)
-    ADD(R2, R5, R6) |; yc (R6) <- yTopLeft (R2) + radius (R5)
+    ADD(R2, R5, R3) |; yc (R3) <- yTopLeft (R2) + radius (R5)
 
     |; drawCircleBres(xc, yc, radius) with LAPF convention
-    PUSH(R5) PUSH(R6) PUSH(R0)
+    PUSH(R5) PUSH(R3) PUSH(R0)
     CALL(drawCircleBres, 3) |; lastPixelCircleX (R0) <- drawCircleBres(xc, yc, radius)
 
     SUB(R5, R0, R0) |; shift (R0) = radius (R5) - lastPixelCircleX (R0)
 
     |; shift (R0) < 1
-    CMPLTC(R0, 1, R5) |;
-    BT(R5, drawFractal_end)
+    CMPLTC(R0, 1, R3) |;
+    BT(R3, drawFractal_end)
     
     ADD(R1, R0, R1) |; xTopLeft (R1) <- xTopLeft (R1) + shift (R0)
 
     ADD(R2, R0, R2) |;yTopLeft (R2) <- yTopLeft (R2) + shift (R0)
 
     MULC(R0, 2, R0) |; shift (R0) <- shift (R0) * 2
+
+    |; I do this because I used R3 for yc to avoid using another register, so, I have to calculate it back
+    |; Thanks to the formula of the radius: radius = sideLength / 2 
+    MULC(R5, 2, R3) |; sideLength (R3) <- radius (R5) * 2
+
     SUB(R3, R0, R3) |; sideLength (R3) <- sideLength (R3) - R0
 
     SUBC(R4, 1, R4) |; maxDepth (R4) <- maxDepth (R4) - 1
@@ -68,7 +73,7 @@ drawFractal2:
 drawFractal_end:
     
     |; Cleaning the stack
-    POP(R6) POP(R5) POP(R4) POP(R3) POP(R2) POP(R1)
+    POP(R5) POP(R4) POP(R3) POP(R2) POP(R1)
     POP(BP) POP(LP)
     RTN()
 
