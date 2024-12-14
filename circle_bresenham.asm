@@ -21,9 +21,8 @@ drawCircleBres:
     LD(BP, -20, R3) |; R3 <- radius
 
     |; Local variables
-    MULC(R3, 2, R0) |; R0 <- 2 * radius (R3)
-    CMOVE(3, R4)    |; R4 <- 3
-    SUBC(R4, R0, R4)|; decisionVar (R4) <- 3 - (2 * radius)
+    MULC(R3, -2, R0) |; R0 <- -2 * radius (R3)
+    ADDC(R0, 3, R4)    |; decisionVar (R4) <- 3 - (2 * radius
 
     MOVE(R31, R5) |; circleX (R5) <- 0 (R31)
     
@@ -35,7 +34,7 @@ circle_loop:
     CMPLE(R5, R3, R0)
     BF(R0, drawCircleBres_end)
 
-    |; Last-argument-pushed-first (LAPF) convention
+    |; placeCirclePixels(xc, yc, circleX, circleY) with LAPF convention
     PUSH(R3) PUSH(R5) PUSH(R2) PUSH(R1)
     CALL(placeCirclePixels, 4)
 
