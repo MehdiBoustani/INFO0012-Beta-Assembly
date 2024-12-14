@@ -47,7 +47,7 @@ circle_loop:
     MULC(R5, 4, R0)
     ADDC(R0, 6, R0)
 
-    ADD(R4, R0, R4)
+    ADD(R4, R0, R4) |; decisionVar (R4) += R0
 
     BR(circle_loop_end)
 
@@ -64,7 +64,7 @@ decisionVar_greater_than_0:
 
 circle_loop_end:
 
-    ADDC(R5, 1, R5)
+    ADDC(R5, 1, R5) |; circleX++
     BR(circle_loop)
 
 drawCircleBres_end:
