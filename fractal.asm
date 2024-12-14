@@ -55,7 +55,8 @@ drawFractal2:
     ADD(R2, R0, R2) |; yTopLeft (R2) <- yTopLeft (R2) + shift (R0)
 
     MULC(R0, 2, R0) |; shift (R0) <- shift (R0) * 2
-     
+    
+    |; Reload sideLength to avoid using a register
     LD(BP, -20, R3)
 
     SUB(R3, R0, R3) |; sideLength (R3) <- sideLength (R3) - R0
