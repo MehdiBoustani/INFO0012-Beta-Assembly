@@ -52,13 +52,11 @@ drawFractal2:
     
     ADD(R1, R0, R1) |; xTopLeft (R1) <- xTopLeft (R1) + shift (R0)
 
-    ADD(R2, R0, R2) |;yTopLeft (R2) <- yTopLeft (R2) + shift (R0)
+    ADD(R2, R0, R2) |; yTopLeft (R2) <- yTopLeft (R2) + shift (R0)
 
     MULC(R0, 2, R0) |; shift (R0) <- shift (R0) * 2
-
-    |; I do this because I used R3 for yc to avoid using another register, so, I have to calculate it back
-    |; Thanks to the formula of the radius: radius = sideLength / 2 
-    MULC(R5, 2, R3) |; sideLength (R3) <- radius (R5) * 2
+     
+    LD(BP, -20, R3)
 
     SUB(R3, R0, R3) |; sideLength (R3) <- sideLength (R3) - R0
 
